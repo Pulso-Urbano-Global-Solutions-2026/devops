@@ -1,0 +1,444 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2026-06-06T00:00:00.000Z",
+  "__export_source": "pulso-urbano-gs2026",
+  "resources": [
+
+    {
+      "_id": "wrk_pulso",
+      "_type": "workspace",
+      "name": "Pulso Urbano — GS 2026/1",
+      "description": "Java API :8080 + .NET API :5000 | VM Azure 20.29.90.79 | FIAP DevOps",
+      "parentId": null,
+      "scope": "collection"
+    },
+
+    {
+      "_id": "env_pulso",
+      "_type": "environment",
+      "name": "Azure VM — 20.29.90.79",
+      "data": {
+        "base_java":   "http://20.29.90.79:8080",
+        "base_dotnet": "http://20.29.90.79:5000",
+        "token":       "PREENCHER_APOS_LOGIN",
+        "usuario_id":  "1",
+        "alerta_id":   "1"
+      },
+      "color": "#4CAF50",
+      "parentId": "wrk_pulso",
+      "isPrivate": false
+    },
+
+    {
+      "_id": "grp_java",
+      "_type": "request_group",
+      "name": "☕  Java API — Spring Boot 3.2  (:8080)",
+      "parentId": "wrk_pulso",
+      "environment": {},
+      "metaSortKey": -1
+    },
+
+    {
+      "_id": "grp_dotnet",
+      "_type": "request_group",
+      "name": "🔷  .NET API — ASP.NET Core 10  (:5000)",
+      "parentId": "wrk_pulso",
+      "environment": {},
+      "metaSortKey": -2
+    },
+
+    {
+      "_id": "grp_j_health",
+      "_type": "request_group",
+      "name": "🏥 Health",
+      "parentId": "grp_java",
+      "metaSortKey": -1
+    },
+    {
+      "_id": "grp_j_auth",
+      "_type": "request_group",
+      "name": "🔐 Auth  [COMEÇAR AQUI]",
+      "parentId": "grp_java",
+      "metaSortKey": -2
+    },
+    {
+      "_id": "grp_j_usuario",
+      "_type": "request_group",
+      "name": "👤 Usuario CRUD  [RUBRICA: CRUD]",
+      "parentId": "grp_java",
+      "metaSortKey": -3
+    },
+    {
+      "_id": "grp_j_score",
+      "_type": "request_group",
+      "name": "🌿 Score Ambiental",
+      "parentId": "grp_java",
+      "metaSortKey": -4
+    },
+    {
+      "_id": "grp_j_recomendacao",
+      "_type": "request_group",
+      "name": "💡 Recomendação",
+      "parentId": "grp_java",
+      "metaSortKey": -5
+    },
+    {
+      "_id": "grp_j_mapa",
+      "_type": "request_group",
+      "name": "🗺️  Mapa GeoJSON",
+      "parentId": "grp_java",
+      "metaSortKey": -6
+    },
+
+    {
+      "_id": "grp_d_health",
+      "_type": "request_group",
+      "name": "🏥 Health",
+      "parentId": "grp_dotnet",
+      "metaSortKey": -1
+    },
+    {
+      "_id": "grp_d_alertas",
+      "_type": "request_group",
+      "name": "🚨 Alertas CRUD  [RUBRICA: CRUD .NET]",
+      "parentId": "grp_dotnet",
+      "metaSortKey": -2
+    },
+    {
+      "_id": "grp_d_stats",
+      "_type": "request_group",
+      "name": "📊 Estatísticas",
+      "parentId": "grp_dotnet",
+      "metaSortKey": -3
+    },
+
+    {
+      "_id": "req_j_health",
+      "_type": "request",
+      "parentId": "grp_j_health",
+      "name": "GET /actuator/health",
+      "method": "GET",
+      "url": "{{ _.base_java }}/actuator/health",
+      "headers": [],
+      "body": {},
+      "metaSortKey": -1,
+      "description": "Verifica se o Spring Boot está UP. Não exige autenticação.\nEsperado: {\"status\":\"UP\"}"
+    },
+
+    {
+      "_id": "req_j_register",
+      "_type": "request",
+      "parentId": "grp_j_auth",
+      "name": "POST /api/v1/auth/register  ⬅ PASSO 1",
+      "method": "POST",
+      "url": "{{ _.base_java }}/api/v1/auth/register",
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"nome\": \"João da Silva\",\n  \"email\": \"joao.silva@email.com\",\n  \"senha\": \"senha123\",\n  \"fazExercicio\": true,\n  \"temCrianca\": false,\n  \"temProblemaResp\": false\n}"
+      },
+      "metaSortKey": -1,
+      "description": "Registra um novo usuário. Público — não precisa de token.\nGuarde o 'id' retornado e coloque em usuario_id no Environment.\nStatus esperado: 201 Created"
+    },
+
+    {
+      "_id": "req_j_login",
+      "_type": "request",
+      "parentId": "grp_j_auth",
+      "name": "POST /api/v1/auth/login  ⬅ PASSO 2 — copie o token!",
+      "method": "POST",
+      "url": "{{ _.base_java }}/api/v1/auth/login",
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"email\": \"joao.silva@email.com\",\n  \"senha\": \"senha123\"\n}"
+      },
+      "metaSortKey": -2,
+      "description": "Autentica e retorna o JWT.\nCopie o campo 'token' da resposta e cole em 'token' no Environment (engrenagem > Edit > token).\nStatus esperado: 200 OK\nO token vale para: Java API e .NET API (mesmo secret)."
+    },
+
+    {
+      "_id": "req_j_usuario_criar",
+      "_type": "request",
+      "parentId": "grp_j_usuario",
+      "name": "POST /api/v1/usuario  [CREATE]",
+      "method": "POST",
+      "url": "{{ _.base_java }}/api/v1/usuario",
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"nome\": \"Maria Oliveira\",\n  \"email\": \"maria.oliveira@email.com\",\n  \"senha\": \"senha456\",\n  \"fazExercicio\": false,\n  \"temCrianca\": true,\n  \"temProblemaResp\": true\n}"
+      },
+      "metaSortKey": -1,
+      "description": "Cria usuário diretamente (endpoint público, sem JWT).\nAlternativa ao /auth/register.\nStatus esperado: 201 Created\n\n>>> EVIDÊNCIA CRUD: após rodar, vá no Oracle e execute:\nSELECT * FROM usuario FETCH FIRST 5 ROWS ONLY;"
+    },
+
+    {
+      "_id": "req_j_usuario_buscar",
+      "_type": "request",
+      "parentId": "grp_j_usuario",
+      "name": "GET /api/v1/usuario/:id  [READ]",
+      "method": "GET",
+      "url": "{{ _.base_java }}/api/v1/usuario/{{ _.usuario_id }}",
+      "headers": [
+        { "name": "Authorization", "value": "Bearer {{ _.token }}" }
+      ],
+      "body": {},
+      "metaSortKey": -2,
+      "description": "Busca usuário por ID. Requer JWT (dono ou ADMIN).\nAtualize usuario_id no Environment com o ID retornado no register/criar.\nStatus esperado: 200 OK"
+    },
+
+    {
+      "_id": "req_j_usuario_atualizar",
+      "_type": "request",
+      "parentId": "grp_j_usuario",
+      "name": "PUT /api/v1/usuario/:id  [UPDATE]",
+      "method": "PUT",
+      "url": "{{ _.base_java }}/api/v1/usuario/{{ _.usuario_id }}",
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" },
+        { "name": "Authorization", "value": "Bearer {{ _.token }}" }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"nome\": \"João da Silva Atualizado\",\n  \"fazExercicio\": false,\n  \"temCrianca\": true,\n  \"temProblemaResp\": false\n}"
+      },
+      "metaSortKey": -3,
+      "description": "Atualiza dados do usuário. Requer JWT do próprio usuário.\nStatus esperado: 200 OK\n\n>>> EVIDÊNCIA CRUD: após rodar, vá no Oracle e execute:\nSELECT * FROM usuario WHERE id = <id>;"
+    },
+
+    {
+      "_id": "req_j_usuario_deletar",
+      "_type": "request",
+      "parentId": "grp_j_usuario",
+      "name": "DELETE /api/v1/usuario/:id  [DELETE]",
+      "method": "DELETE",
+      "url": "{{ _.base_java }}/api/v1/usuario/{{ _.usuario_id }}",
+      "headers": [
+        { "name": "Authorization", "value": "Bearer {{ _.token }}" }
+      ],
+      "body": {},
+      "metaSortKey": -4,
+      "description": "Soft-delete do usuário. Requer JWT do próprio usuário.\nStatus esperado: 204 No Content\n\n>>> EVIDÊNCIA CRUD: após rodar, vá no Oracle e execute:\nSELECT id, nome, ativo FROM usuario WHERE id = <id>;\n(campo 'ativo' deve aparecer como 0/N)"
+    },
+
+    {
+      "_id": "req_j_usuario_listar",
+      "_type": "request",
+      "parentId": "grp_j_usuario",
+      "name": "GET /api/v1/usuario  [LIST — só ADMIN]",
+      "method": "GET",
+      "url": "{{ _.base_java }}/api/v1/usuario?page=0&size=10",
+      "headers": [
+        { "name": "Authorization", "value": "Bearer {{ _.token }}" }
+      ],
+      "body": {},
+      "metaSortKey": -5,
+      "description": "Lista todos os usuários paginados. Exige role ADMIN.\nCom usuário normal retorna 403 Forbidden — isso é esperado.\nStatus esperado: 200 OK (se ADMIN) / 403 (se usuário comum)"
+    },
+
+    {
+      "_id": "req_j_score_zonas",
+      "_type": "request",
+      "parentId": "grp_j_score",
+      "name": "GET /api/v1/score/zonas  [público]",
+      "method": "GET",
+      "url": "{{ _.base_java }}/api/v1/score/zonas",
+      "headers": [],
+      "body": {},
+      "metaSortKey": -1,
+      "description": "Lista todas as zonas monitoradas com o score mais recente. Público.\nUse os IDs de zona retornados nos endpoints de score/historico e alertas."
+    },
+
+    {
+      "_id": "req_j_score_current",
+      "_type": "request",
+      "parentId": "grp_j_score",
+      "name": "GET /api/v1/score/current  [por GPS]",
+      "method": "GET",
+      "url": "{{ _.base_java }}/api/v1/score/current?lat=-23.5505&lon=-46.6333",
+      "headers": [],
+      "body": {},
+      "metaSortKey": -2,
+      "description": "Score ambiental atual para a coordenada GPS informada.\nlat/lon padrão = centro de São Paulo.\nRetorna: valorScore, classificacao (BOM/MODERADO/RUIM/CRITICO), no2Valor, tempValor, zonaId, zonaNome.\nStatus esperado: 200 OK (se houver dados ingeridos) / 404 (se não há score para o ponto)"
+    },
+
+    {
+      "_id": "req_j_score_historico",
+      "_type": "request",
+      "parentId": "grp_j_score",
+      "name": "GET /api/v1/score/historico  [por zona]",
+      "method": "GET",
+      "url": "{{ _.base_java }}/api/v1/score/historico?zonaId=1&dias=7",
+      "headers": [],
+      "body": {},
+      "metaSortKey": -3,
+      "description": "Histórico de scores de uma zona nos últimos N dias.\nAjuste zonaId com um ID válido retornado em /score/zonas.\nStatus esperado: 200 OK"
+    },
+
+    {
+      "_id": "req_j_recomendacao",
+      "_type": "request",
+      "parentId": "grp_j_recomendacao",
+      "name": "GET /api/v1/recomendacao",
+      "method": "GET",
+      "url": "{{ _.base_java }}/api/v1/recomendacao?scoreId=1&usuarioId={{ _.usuario_id }}",
+      "headers": [],
+      "body": {},
+      "metaSortKey": -1,
+      "description": "Gera recomendação personalizada baseada no perfil do usuário e no score.\nAjuste scoreId com um ID válido (buscar em /score/zonas ou /score/historico).\nStatus esperado: 200 OK"
+    },
+
+    {
+      "_id": "req_j_mapa_no2",
+      "_type": "request",
+      "parentId": "grp_j_mapa",
+      "name": "GET /api/v1/mapa/camadas?tipo=NO2",
+      "method": "GET",
+      "url": "{{ _.base_java }}/api/v1/mapa/camadas?tipo=NO2&cidade=sao_paulo",
+      "headers": [],
+      "body": {},
+      "metaSortKey": -1,
+      "description": "Camada GeoJSON de NO₂ para visualização em mapa. Público.\nStatus esperado: 200 OK com FeatureCollection GeoJSON"
+    },
+
+    {
+      "_id": "req_j_mapa_temp",
+      "_type": "request",
+      "parentId": "grp_j_mapa",
+      "name": "GET /api/v1/mapa/camadas?tipo=TEMP_SUPERFICIE",
+      "method": "GET",
+      "url": "{{ _.base_java }}/api/v1/mapa/camadas?tipo=TEMP_SUPERFICIE&cidade=sao_paulo",
+      "headers": [],
+      "body": {},
+      "metaSortKey": -2,
+      "description": "Camada GeoJSON de temperatura de superfície. Público.\nStatus esperado: 200 OK com FeatureCollection GeoJSON"
+    },
+
+    {
+      "_id": "req_d_health",
+      "_type": "request",
+      "parentId": "grp_d_health",
+      "name": "GET /api/health",
+      "method": "GET",
+      "url": "{{ _.base_dotnet }}/api/health",
+      "headers": [],
+      "body": {},
+      "metaSortKey": -1,
+      "description": "Verifica saúde da .NET API e conectividade com Oracle.\nEsperado: { \"status\": \"healthy\", \"database\": \"connected\" }"
+    },
+
+    {
+      "_id": "req_d_alerta_criar",
+      "_type": "request",
+      "parentId": "grp_d_alertas",
+      "name": "POST /api/alertas  [CREATE]",
+      "method": "POST",
+      "url": "{{ _.base_dotnet }}/api/alertas",
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" },
+        { "name": "Authorization", "value": "Bearer {{ _.token }}" }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"zonaId\": 1,\n  \"nivelAlerta\": \"ALERTA\",\n  \"scoreRegistrado\": 38.5,\n  \"no2Registrado\": 41.2,\n  \"textoRecomendacao\": \"Evite esforço físico ao ar livre. Índice de NO₂ elevado na região.\"\n}"
+      },
+      "metaSortKey": -1,
+      "description": "Cria um alerta histórico. Requer Bearer token (do login Java).\nnivelAlerta aceita: ATENCAO | ALERTA | EMERGENCIA\nzonaId: use um ID válido retornado em /api/v1/score/zonas\nStatus esperado: 201 Created\n\n>>> EVIDÊNCIA CRUD: após rodar, anote o 'id' retornado, coloque em alerta_id no Environment."
+    },
+
+    {
+      "_id": "req_d_alerta_listar",
+      "_type": "request",
+      "parentId": "grp_d_alertas",
+      "name": "GET /api/alertas  [LIST — público]",
+      "method": "GET",
+      "url": "{{ _.base_dotnet }}/api/alertas?zonaId=1&dias=30&pagina=1&tamanhoPagina=20",
+      "headers": [],
+      "body": {},
+      "metaSortKey": -2,
+      "description": "Lista alertas com paginação. Público.\nParâmetros opcionais: zonaId, dias (padrão 30), pagina (padrão 1), tamanhoPagina (padrão 20).\nStatus esperado: 200 OK"
+    },
+
+    {
+      "_id": "req_d_alerta_buscar",
+      "_type": "request",
+      "parentId": "grp_d_alertas",
+      "name": "GET /api/alertas/:id  [READ — público]",
+      "method": "GET",
+      "url": "{{ _.base_dotnet }}/api/alertas/{{ _.alerta_id }}",
+      "headers": [],
+      "body": {},
+      "metaSortKey": -3,
+      "description": "Busca alerta por ID. Público.\nAtualize alerta_id no Environment com o ID retornado no CREATE.\nStatus esperado: 200 OK"
+    },
+
+    {
+      "_id": "req_d_alerta_confirmar",
+      "_type": "request",
+      "parentId": "grp_d_alertas",
+      "name": "PUT /api/alertas/:id/confirmar  [UPDATE]",
+      "method": "PUT",
+      "url": "{{ _.base_dotnet }}/api/alertas/{{ _.alerta_id }}/confirmar",
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" },
+        { "name": "Authorization", "value": "Bearer {{ _.token }}" }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"confirmado\": true\n}"
+      },
+      "metaSortKey": -4,
+      "description": "Confirma ou desconfirma um alerta. Requer Bearer token.\nStatus esperado: 200 OK com campo confirmado atualizado"
+    },
+
+    {
+      "_id": "req_d_alerta_deletar",
+      "_type": "request",
+      "parentId": "grp_d_alertas",
+      "name": "DELETE /api/alertas/:id  [DELETE]",
+      "method": "DELETE",
+      "url": "{{ _.base_dotnet }}/api/alertas/{{ _.alerta_id }}",
+      "headers": [
+        { "name": "Authorization", "value": "Bearer {{ _.token }}" }
+      ],
+      "body": {},
+      "metaSortKey": -5,
+      "description": "Remove alerta permanentemente. Requer Bearer token.\nStatus esperado: 204 No Content"
+    },
+
+    {
+      "_id": "req_d_stats_zona",
+      "_type": "request",
+      "parentId": "grp_d_stats",
+      "name": "GET /api/estatisticas/zona/:zonaId",
+      "method": "GET",
+      "url": "{{ _.base_dotnet }}/api/estatisticas/zona/1?dias=30",
+      "headers": [],
+      "body": {},
+      "metaSortKey": -1,
+      "description": "Estatísticas de qualidade do ar de uma zona. Público.\nRetorna: scoreMedio, diasCriticos, tendencia (MELHORANDO | PIORANDO | ESTAVEL).\nStatus esperado: 200 OK"
+    },
+
+    {
+      "_id": "req_d_stats_resumo",
+      "_type": "request",
+      "parentId": "grp_d_stats",
+      "name": "GET /api/estatisticas/resumo",
+      "method": "GET",
+      "url": "{{ _.base_dotnet }}/api/estatisticas/resumo",
+      "headers": [],
+      "body": {},
+      "metaSortKey": -2,
+      "description": "Resumo geral dos alertas dos últimos 30 dias. Público.\nRetorna: totalAlertas, zonaMaisCritica, nivelPredominante.\nStatus esperado: 200 OK"
+    }
+
+  ]
+}
