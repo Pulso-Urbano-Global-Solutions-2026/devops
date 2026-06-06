@@ -35,7 +35,7 @@ services:
 
   java-api:
     build:
-      context: ./java-api
+      context: ./java-api/pulso-java
       dockerfile: Dockerfile
     # Nome com RM (obrigatório)
     container_name: pulso-java-562999
