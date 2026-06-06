@@ -12,3 +12,10 @@ obj/
 
 # Docker override local
 docker-compose.override.yml
+
+# Arquivos internos / referência — não vão para o repo público
+*.pdf
+BACKLOG_DEVOPS.md
+script-azure.sh
+docs/superpowers/
+docs/arquitetura-macroGS.drawio.png
