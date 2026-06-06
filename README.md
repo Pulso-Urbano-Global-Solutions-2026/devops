@@ -16,8 +16,8 @@
 
 | Recurso | URL |
 |---------|-----|
-| Java API (deploy) | [PREENCHER após deploy] |
-| .NET API (deploy) | [PREENCHER após deploy] |
+| Java API (deploy) | http://20.12.204.186:8080/swagger-ui.html |
+| .NET API (deploy) | http://20.12.204.186:5000/swagger/index.html |
 | Vídeo DevOps (YouTube) | [PREENCHER após gravar] |
 | Repositório Java | https://github.com/Pulso-Urbano-Global-Solutions-2026/backend-java |
 | Repositório .NET | https://github.com/Pulso-Urbano-Global-Solutions-2026/backend-dotnet |
@@ -90,7 +90,7 @@ O script cria VM, instala Docker, clona o repo com submodulos, injeta o `.env` e
 
 ```
 [1/8] Resource Group  pulso-rg-fiap2026
-[2/8] VM              pulso-vm-562999  (Standard_B2s · 2 vCPU · 4 GB · Ubuntu 22.04)
+[2/8] VM              pulso-vm-562999  (Standard_D2s_v3 · 2 vCPU · 8 GB · Ubuntu 22.04)
 [3/8] Portas          22, 8080, 5000, 1521
 [4/8] Docker Engine   via apt repository oficial
 [5/8] Usuário         pulso-app (não-root no host)
