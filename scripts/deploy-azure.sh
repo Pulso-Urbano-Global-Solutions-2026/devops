@@ -68,17 +68,24 @@ except Exception as e:
 }
 
 # ─── VALIDAÇÃO LOCAL ─────────────────────────────────────────────────────────
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-ROOT_DIR="$(dirname "$SCRIPT_DIR")"
+# Lê .env do diretório atual (onde o script é invocado).
+# Isso permite rodar direto do Cloud Shell sem clonar o repo:
+#   curl -fsSL <URL_RAW>/deploy-azure.sh -o deploy-azure.sh
+#   bash deploy-azure.sh        ← com .env no mesmo diretório
 
-if [ ! -f "$ROOT_DIR/.env" ]; then
-    echo "❌ ERRO: .env nao encontrado em $ROOT_DIR/.env"
-    echo "   Execute: cp .env.example .env  e preencha os valores."
+if [ ! -f ".env" ]; then
+    echo "❌ ERRO: .env nao encontrado no diretorio atual ($(pwd))"
+    echo "   Crie o .env antes de continuar. Exemplo minimo:"
+    echo "     ORACLE_PASSWORD=PulsoFiap@2026"
+    echo "     ORACLE_APP_USER=RM562999"
+    echo "     ORACLE_APP_PASSWORD=fiap2026"
+    echo "     JWT_SECRET=\$(openssl rand -base64 64)"
+    echo "     DOTNET_JWT_SECRET=\$JWT_SECRET"
     exit 1
 fi
 
-ENV_B64=$(base64 -w 0 "$ROOT_DIR/.env")
-echo "✅ .env carregado e codificado ($(wc -c < "$ROOT_DIR/.env") bytes)."
+ENV_B64=$(base64 -w 0 ".env")
+echo "✅ .env carregado e codificado ($(wc -c < ".env") bytes)."
 
 # ─── CONFIGURAÇÕES ────────────────────────────────────────────────────────────
 RESOURCE_GROUP="pulso-rg-fiap2026"
