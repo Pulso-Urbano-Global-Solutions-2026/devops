@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1"
+  tooltips="1" connect="1" arrows="1" fold="1" page="1"
+  pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+  <root>
+    <mxCell id="0"/>
+    <mxCell id="1" parent="0"/>
+
+    <!-- VM Cloud -->
+    <mxCell id="vm" value="&#x2601;&#xFE0F; VM Cloud — Ubuntu 22.04&#xa;Rede: pulso-net"
+      style="rounded=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;fontStyle=1;verticalAlign=top;"
+      vertex="1" parent="1">
+      <mxGeometry x="300" y="80" width="900" height="600" as="geometry"/>
+    </mxCell>
+
+    <!-- Oracle -->
+    <mxCell id="oracle" value="&#x1F5C4;&#xFE0F; Oracle XE&#xa;pulso-oracle-562999&#xa;Porta: 1521&#xa;Vol: pulso-oracle-data"
+      style="rounded=1;whiteSpace=wrap;fillColor=#f8cecc;strokeColor=#b85450;fontSize=12;"
+      vertex="1" parent="1">
+      <mxGeometry x="650" y="480" width="220" height="120" as="geometry"/>
+    </mxCell>
+
+    <!-- Java API -->
+    <mxCell id="java" value="&#x2615; Java API&#xa;pulso-java-562999&#xa;Spring Boot 3.2&#xa;Porta: 8080"
+      style="rounded=1;whiteSpace=wrap;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;"
+      vertex="1" parent="1">
+      <mxGeometry x="380" y="260" width="220" height="120" as="geometry"/>
+    </mxCell>
+
+    <!-- .NET API -->
+    <mxCell id="dotnet" value="&#x2B21; .NET API&#xa;pulso-dotnet-562999&#xa;ASP.NET Core 10&#xa;Porta: 5000"
+      style="rounded=1;whiteSpace=wrap;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=12;"
+      vertex="1" parent="1">
+      <mxGeometry x="920" y="260" width="220" height="120" as="geometry"/>
+    </mxCell>
+
+    <!-- Mobile -->
+    <mxCell id="mobile" value="&#x1F4F1; App Mobile&#xa;React Native&#xa;Expo Router"
+      style="rounded=1;whiteSpace=wrap;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;"
+      vertex="1" parent="1">
+      <mxGeometry x="100" y="280" width="160" height="100" as="geometry"/>
+    </mxCell>
+
+    <!-- Satellite -->
+    <mxCell id="sat" value="&#x1F6F0;&#xFE0F; Sat&#xe9;lite&#xa;Sentinel-5P&#xa;ECOSTRESS"
+      style="rounded=1;whiteSpace=wrap;fillColor=#f0f0f0;strokeColor=#666;fontSize=12;"
+      vertex="1" parent="1">
+      <mxGeometry x="100" y="100" width="160" height="100" as="geometry"/>
+    </mxCell>
+
+    <!-- ESP32 -->
+    <mxCell id="esp" value="&#x1F4E1; ESP32&#xa;Wokwi Sim&#xa;MQTT"
+      style="rounded=1;whiteSpace=wrap;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;"
+      vertex="1" parent="1">
+      <mxGeometry x="100" y="460" width="160" height="80" as="geometry"/>
+    </mxCell>
+
+    <!-- Edges -->
+    <mxCell edge="1" source="mobile" target="java" value="REST/JWT" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell edge="1" source="mobile" target="dotnet" value="REST" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell edge="1" source="java" target="oracle" value="JPA/JDBC" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell edge="1" source="dotnet" target="oracle" value="EF Core" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell edge="1" source="sat" target="java" value="API Copernicus&#xa;NASA Earthdata" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell edge="1" source="esp" target="java" value="MQTT" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+  </root>
+</mxGraphModel>
