@@ -1,0 +1,14 @@
+# Credenciais reais — nunca commitar
+.env
+
+# Gerados localmente
+.DS_Store
+*.log
+target/
+bin/
+obj/
+.idea/
+.vscode/
+
+# Docker override local
+docker-compose.override.yml
