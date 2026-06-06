@@ -9,6 +9,7 @@ services:
 
   oracle:
     image: gvenzl/oracle-xe:21-slim
+    platform: linux/amd64  # Oracle XE é x86 only; garante emulação em ARM (OCI Ampere)
     # Nome com RM (obrigatório — ausência perde -0.5 ponto)
     container_name: pulso-oracle-562999
     ports:
