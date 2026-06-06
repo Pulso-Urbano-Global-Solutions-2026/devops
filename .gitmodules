@@ -1,0 +1,6 @@
+[submodule "java-api"]
+	path = java-api
+	url = https://github.com/Pulso-Urbano-Global-Solutions-2026/backend-java.git
+[submodule "dotnet-api"]
+	path = dotnet-api
+	url = https://github.com/Pulso-Urbano-Global-Solutions-2026/backend-dotnet
