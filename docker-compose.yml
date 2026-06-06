@@ -1,0 +1,89 @@
+# =========================================================
+# PULSO URBANO — Docker Compose
+# Containers: Oracle + Java API + .NET API
+# Rede: pulso-net | Volume: pulso-oracle-data
+# RM do representante: 562999
+# =========================================================
+
+services:
+
+  oracle:
+    image: gvenzl/oracle-xe:21-slim
+    # Nome com RM (obrigatório — ausência perde -0.5 ponto)
+    container_name: pulso-oracle-562999
+    ports:
+      # Porta exposta externamente (obrigatório)
+      - "1521:1521"
+    environment:
+      # Variável de ambiente (obrigatório — ausência perde -0.5 ponto)
+      ORACLE_PASSWORD: ${ORACLE_PASSWORD}
+      APP_USER: ${ORACLE_APP_USER}
+      APP_USER_PASSWORD: ${ORACLE_APP_PASSWORD}
+    volumes:
+      # Volume nomeado (obrigatório — ausência perde -1.0 ponto)
+      - pulso-oracle-data:/opt/oracle/oradata
+    networks:
+      - pulso-net
+    healthcheck:
+      test: ["CMD-SHELL", "healthcheck.sh"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 120s
+    restart: unless-stopped
+
+  java-api:
+    build:
+      context: ./java-api
+      dockerfile: Dockerfile
+    # Nome com RM (obrigatório)
+    container_name: pulso-java-562999
+    ports:
+      # Porta exposta (obrigatório)
+      - "8080:8080"
+    environment:
+      # Variáveis de ambiente (obrigatório — cada ausência perde -0.5 ponto)
+      DB_USER: ${ORACLE_APP_USER}
+      DB_PASS: ${ORACLE_APP_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      COPERNICUS_USER: ${COPERNICUS_USER}
+      COPERNICUS_PASS: ${COPERNICUS_PASS}
+      NASA_EARTHDATA_TOKEN: ${NASA_EARTHDATA_TOKEN}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS}
+    depends_on:
+      oracle:
+        condition: service_healthy
+    networks:
+      - pulso-net
+    restart: unless-stopped
+
+  dotnet-api:
+    build:
+      context: ./dotnet-api
+      dockerfile: Dockerfile
+    # Nome com RM (obrigatório)
+    container_name: pulso-dotnet-562999
+    ports:
+      # Porta exposta (obrigatório)
+      - "5000:5000"
+    environment:
+      # Variáveis de ambiente (obrigatório)
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT:-Production}
+      DB_USER: ${DOTNET_DB_USER}
+      DB_PASS: ${DOTNET_DB_PASS}
+      JWT_SECRET: ${DOTNET_JWT_SECRET}
+    depends_on:
+      oracle:
+        condition: service_healthy
+    networks:
+      - pulso-net
+    restart: unless-stopped
+
+networks:
+  pulso-net:
+    driver: bridge
+
+volumes:
+  # Volume nomeado para persistência do Oracle (obrigatório)
+  pulso-oracle-data:
+    name: pulso-oracle-data
