@@ -1,15 +1,27 @@
 #!/bin/bash
 # =========================================================
 # PULSO URBANO — Script de Evidencia para Video
-# Execute apos os containers estarem UP: docker compose ps
+# Uso: cd /opt/pulso-urbano && sudo bash scripts/evidencia-banco.sh
+#
+# Precisa de sudo pois pulso-admin nao esta no grupo docker.
+# O script le as credenciais do .env presente no diretorio atual.
 # =========================================================
 
 set -e
+
+# Carrega variáveis do .env se existir
+if [ -f ".env" ]; then
+    set -a
+    # shellcheck disable=SC1091
+    source .env
+    set +a
+fi
+
 JAVA="pulso-java-562999"
 DOTNET="pulso-dotnet-562999"
 ORACLE="pulso-oracle-562999"
 DB_USER="${ORACLE_APP_USER:-RM562999}"
-DB_PASS="${ORACLE_APP_PASSWORD:-fiap2026}"
+DB_PASS="${ORACLE_APP_PASSWORD:-081105}"
 
 separator() { echo ""; echo "======================================"; echo "  $1"; echo "======================================"; }
 
@@ -32,6 +44,7 @@ docker container exec $JAVA ls -l /app
 
 separator "3. .NET API — whoami + estrutura"
 docker container exec $DOTNET whoami
+docker container exec $DOTNET pwd
 docker container exec $DOTNET ls -l /app
 
 separator "3. ORACLE — whoami"
@@ -39,7 +52,7 @@ docker container exec $ORACLE whoami
 
 # ── 4. SELECT no banco (evidencia obrigatoria) ───────────
 separator "4. SELECT NO BANCO — EVIDENCIA DE PERSISTENCIA"
-docker container exec $ORACLE sqlplus -S $DB_USER/$DB_PASS@//localhost:1521/XEPDB1 << 'SQL'
+docker container exec $ORACLE sqlplus -S "$DB_USER/$DB_PASS@//localhost:1521/XEPDB1" << 'SQL'
 SET LINESIZE 120
 SET PAGESIZE 50
 
@@ -65,9 +78,10 @@ SQL
 # ── 5. Teste dos endpoints ───────────────────────────────
 separator "5. TESTE DE ENDPOINTS"
 echo "Java API health:"
-curl -s http://localhost:8080/actuator/health | head -c 200
+curl -s http://localhost:8080/actuator/health
 echo ""
-echo ".NET API health:"
-curl -s http://localhost:5000/api/health | head -c 200
+echo ".NET API swagger:"
+curl -s -o /dev/null -w "HTTP %{http_code}" http://localhost:5000/swagger/index.html
+echo ""
 
 separator "EVIDENCIAS COLETADAS — GRAVACAO CONCLUIDA"
