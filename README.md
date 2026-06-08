@@ -31,7 +31,7 @@ todos orquestrados via Docker Compose em VM cloud Azure.
 
 ## Arquitetura Macro
 
-![Arquitetura](docs/arquitetura-macro.png)
+![Arquitetura](docs/DevOps-fluxo-pulso-urbano-final.drawio.png)
 
 | Container | Imagem | Porta | Papel |
 |-----------|--------|-------|-------|
