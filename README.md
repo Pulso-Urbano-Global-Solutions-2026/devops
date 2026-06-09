@@ -5,6 +5,11 @@ Disciplina: **DevOps Tools & Cloud Computing**
 
 ---
 
+## Atenção
+para realizar o clone com todos os arquivos, utilize o: git clone --recurse-submodules <url-do-repositorio>
+
+---
+
 ## Por que containerização em nuvem?
 
 Durante o desenvolvimento, cada serviço do Pulso Urbano rodava na máquina de cada desenvolvedor — funcionava localmente, mas a banca precisa ver rodando em produção real. Containerização com Docker resolve o "na minha máquina funciona": a mesma imagem que passa nos testes locais é a que sobe na Azure.
