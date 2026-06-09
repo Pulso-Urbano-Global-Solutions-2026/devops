@@ -31,7 +31,7 @@ Escolhemos **Azure VM** em vez de PaaS (Heroku, Railway para toda a stack) porqu
 |---------|-----|
 | Java API Swagger (Azure) | `http://20.12.204.186:8080/swagger-ui.html` |
 | .NET API Swagger (Azure) | `http://20.12.204.186:5000/swagger/index.html` |
-| Vídeo DevOps (YouTube) | _[preencher após gravação]_ |
+| Vídeo DevOps (YouTube) | [ `https://youtu.be/xKcHJiNuz8c?si=qI1V-ZRdnVJvfwYZ` |
 | Repositório Java | `https://github.com/Pulso-Urbano-Global-Solutions-2026/backend-java` |
 | Repositório .NET | `https://github.com/Pulso-Urbano-Global-Solutions-2026/backend-dotnet` |
 
@@ -39,37 +39,9 @@ Escolhemos **Azure VM** em vez de PaaS (Heroku, Railway para toda a stack) porqu
 
 ## Arquitetura Macro
 
-```
-                     INTERNET
-                         │
-              ┌──────────▼──────────┐
-              │   Azure VM          │
-              │   Standard_D2s_v3   │
-              │   2 vCPU · 8 GB RAM │
-              │   Ubuntu 22.04 LTS  │
-              │                     │
-              │  ┌────────────────┐ │ :8080
-              │  │pulso-java-     │◄├──────── App Mobile / Swagger
-              │  │  562999        │ │         Java API (Spring Boot 3.2)
-              │  └───────┬────────┘ │
-              │          │          │
-              │  ┌───────▼────────┐ │ :5000
-              │  │pulso-dotnet-   │◄├──────── Swagger .NET
-              │  │  562999        │ │         .NET API (ASP.NET Core 10)
-              │  └───────┬────────┘ │
-              │          │          │
-              │  ┌───────▼────────┐ │ :1521
-              │  │pulso-oracle-   │ │         Oracle XE 21c
-              │  │  562999        │ │         (interno — não exposto
-              │  └───────┬────────┘ │          à internet)
-              │          │          │
-              │          ▼          │
-              │  Volume: pulso-oracle-data
-              │  Rede:   pulso-net (bridge)
-              └─────────────────────┘
-              
-              Usuário não-root nos containers de app: pulso
-```
+![Arquitetura Macro](docs/DevOps-fluxo-pulso-urbano-final.drawio.png)
+
+
 
 ---
 
