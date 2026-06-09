@@ -6,7 +6,7 @@ Disciplina: **DevOps Tools & Cloud Computing**
 ---
 
 ## Atenção
-para realizar o clone com todos os arquivos, utilize o: git clone --recurse-submodules <url-do-repositorio>
+para realizar o clone com todos os arquivos, utilize o: git clone --recurse-submodules (url-do-repositorio)
 
 ---
 
